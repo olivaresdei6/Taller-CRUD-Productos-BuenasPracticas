@@ -28,7 +28,9 @@ const Form = ( { formRegistration, setFormRegistration, listProducts, setProduct
     
     // Se crea un useEffect para cambiar el estado de modo de edición
     useEffect(() => {
-        changeModeEdition();
+        if(productEdit!==null){
+            changeModeEdition();
+        }
     }, []);
 
     const generateObjectProduct = () => {
