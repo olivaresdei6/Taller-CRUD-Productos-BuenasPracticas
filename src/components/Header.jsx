@@ -1,6 +1,7 @@
 import Form from "./Form";
 
 const Header = ({setFormRegistration, formRegistration, listProducts, setProductList}) => {
+
     return (
         <div className="container">
             <h1 className="text-center">Productos</h1>
@@ -13,16 +14,12 @@ const Header = ({setFormRegistration, formRegistration, listProducts, setProduct
             </button>
             <hr/>
             {
-                formRegistration ? (
+                formRegistration ?? (
                     <Form
                         setFormRegistration={setFormRegistration}
                         listProducts={listProducts}
                         setProductList={setProductList}
                     />
-                ) : (
-                    <div>
-                    <h1>No hay productos</h1>
-                    </div>
                 )
             }
         </div>

@@ -1,4 +1,4 @@
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 import db from "../db/firebase";
 export const saveProduct = async (product) => {
     try {
@@ -8,6 +8,16 @@ export const saveProduct = async (product) => {
         // Se guarda el objeto en la base de datos
         await addDoc(collection(db, 'productos'), productDb);
         return productDb
+    }catch (e) {
+        console.log(e);
+    }
+}
+
+export const getProducts = async () => {
+    try {
+        const products = await getDocs(collection(db, 'productos'));
+        return products.docs.map(product =>( {...product.data(), id: product.id}));
+
     }catch (e) {
         console.log(e);
     }

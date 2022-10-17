@@ -1,30 +1,39 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {saveProduct} from "../services/Product.services";
 
 const Form = ( { formRegistration, setFormRegistration, listProducts, setProductList, modeEdition, setModeEdition, productEdit, setProductEdit } ) => {
-
     const [nameProduct, setProductName] = useState('');
     const [descriptionProduct, setDescriptionProduct] = useState('');
     const [priceProduct, setPriceProduct] = useState('');
     const [stockProduct, setStockProduct] = useState('');
     const [categoryProduct, setCategoryProduct] = useState('');
-    const [imageProduct, setImagenProduct] = useState('');
+    const [urlImg, setUrlImg] = useState('');
     const [statusProduct, setStateProduct] = useState('');
 
     // Se crea un estado para el id del producto a editar
     const [idProduct, setIdProduct] = useState('');
-    // Se crea un estado para el formulario de edición de productos
-    const [formEdition, setFormEdition] = useState(false);
+
+    const changeModeEdition = () => {
+        const {nameProduct, descriptionProduct, priceProduct, stockProduct, categoryProduct, urlImg, statusProduct, id} = productEdit;
+        setProductName(nameProduct);
+        setDescriptionProduct(descriptionProduct);
+        setPriceProduct(priceProduct);
+        setStockProduct(stockProduct);
+        setCategoryProduct(categoryProduct);
+        setUrlImg(urlImg);
+        setStateProduct(statusProduct);
+        setIdProduct(id);
+    }
+    
+    // Se crea un useEffect para cambiar el estado de modo de edición
+    useEffect(() => {
+        if(productEdit){
+            changeModeEdition();
+        }
+    }, [changeModeEdition, productEdit]);
 
     const generateObjectProduct = () => {
-        return {
-            name: nameProduct,
-            description: descriptionProduct,
-            price: priceProduct,
-            stock: stockProduct,
-            category: categoryProduct,
-            status: statusProduct
-        }
+        return { nameProduct, descriptionProduct, priceProduct, stockProduct, categoryProduct, statusProduct }
     }
 
     const save = async (e)=> {
@@ -52,12 +61,12 @@ const Form = ( { formRegistration, setFormRegistration, listProducts, setProduct
         setPriceProduct('');
         setStockProduct('');
         setCategoryProduct('');
-        setImagenProduct('');
-        setFormEdition(false);
+        setUrlImg('');
+        setModeEdition(false);
+        setProductEdit(null);
     }
     return (
-        <div className="container">
-            <div className="row">
+        <div className="row">
                 <div className="col-md-12">
                     <h3 className="text-center">
                         {
@@ -126,7 +135,6 @@ const Form = ( { formRegistration, setFormRegistration, listProducts, setProduct
                     </form>
                 </div>
             </div>
-        </div>
     );
 };
 
