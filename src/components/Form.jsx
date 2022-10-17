@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {saveProduct} from "../services/Product.services";
+import {saveProduct, updateProduct} from "../services/Product.services";
 
 const Form = ( { formRegistration, setFormRegistration, listProducts, setProductList, modeEdition, setModeEdition, productEdit, setProductEdit } ) => {
     const [nameProduct, setProductName] = useState('');
@@ -14,6 +14,7 @@ const Form = ( { formRegistration, setFormRegistration, listProducts, setProduct
     const [idProduct, setIdProduct] = useState('');
 
     const changeModeEdition = () => {
+        console.log('changeModeEdition', productEdit);
         const {nameProduct, descriptionProduct, priceProduct, stockProduct, categoryProduct, urlImg, statusProduct, id} = productEdit;
         setProductName(nameProduct);
         setDescriptionProduct(descriptionProduct);
@@ -27,13 +28,11 @@ const Form = ( { formRegistration, setFormRegistration, listProducts, setProduct
     
     // Se crea un useEffect para cambiar el estado de modo de edición
     useEffect(() => {
-        if(productEdit){
-            changeModeEdition();
-        }
-    }, [changeModeEdition, productEdit]);
+        changeModeEdition();
+    }, []);
 
     const generateObjectProduct = () => {
-        return { nameProduct, descriptionProduct, priceProduct, stockProduct, categoryProduct, statusProduct }
+        return { nameProduct, descriptionProduct, priceProduct, stockProduct, categoryProduct, statusProduct, id: idProduct }
     }
 
     const save = async (e)=> {
@@ -43,18 +42,32 @@ const Form = ( { formRegistration, setFormRegistration, listProducts, setProduct
         setProductList([...listProducts, productDB]);
         setFormRegistration(false);
     }
+
     const edit = async (e)=> {
         e.preventDefault();
+        // Se crea un objeto con los datos del producto a editar. Estos datos se obtienen del estado
+        // de los inputs
         const data = generateObjectProduct()
-        const productDB = await saveProduct(data);
-        console.log(productDB);
-        setProductList([...listProducts, productDB]);
-        setFormRegistration(false);
+        console.log('data', data);
+        // Se llama al servicio de actualización de productos
+        const productDB = await updateProduct(data);
+        // Se crea una copia del arreglo de productos
+        const newProductList = listProducts.map( prod => (
+            // Se verifica si el id del producto es igual al id del producto a editar. Si es así, se actualiza el producto
+            // Si no es así, se retorna el producto sin modificar
+            prod.id === productDB.id ? { ...productDB, id:productDB.id }: prod
+        ));
+        // Se actualiza el estado del listado de productos
+        setProductList(newProductList);
+        // Se actualiza el estado del modo de edición y se limpian los estados de los inputs
+        clean();
     }
+
     const cancel = () => {
         clean();
         setFormRegistration(false);
     }
+
     const clean = () => {
         setProductName('');
         setDescriptionProduct('');
@@ -65,6 +78,7 @@ const Form = ( { formRegistration, setFormRegistration, listProducts, setProduct
         setModeEdition(false);
         setProductEdit(null);
     }
+
     return (
         <div className="row">
                 <div className="col-md-12">

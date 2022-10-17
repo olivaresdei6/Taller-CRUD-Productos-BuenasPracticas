@@ -16,6 +16,7 @@ function App() {
     // Se crea un estado para el producto a editar
     const [productEdit, setProductEdit] = useState(null);
 
+    // Se crea un useEffect para obtener los productos de la base de datos
     useEffect( () => {
         const getData = async () => {
             const data = await getProducts();
@@ -31,6 +32,10 @@ function App() {
                 formRegistration={formRegistration}
                 listProducts={listProducts}
                 setProductList={setProductList}
+                setModeEdition={setModeEdition}
+                modeEdition={modeEdition}
+                productEdit={productEdit}
+                setProductEdit={setProductEdit}
             />
             <div className="container">
                 <div className="row row-cols-3">
@@ -41,6 +46,9 @@ function App() {
                                     product={product}
                                     setModeEdition={setModeEdition}
                                     setProductEdit={setProductEdit}
+                                    listProducts={listProducts}
+                                    setProductList={setProductList}
+                                    setFormRegistration={setFormRegistration}
                                 />
                             </div>
                         ))
@@ -48,7 +56,7 @@ function App() {
                 </div>
                 <div className="mt-5 mb-5">
                     {
-                        modeEdition ? (
+                        modeEdition || formRegistration ? (
                             <Form
                                 setFormRegistration={setFormRegistration}
                                 listProducts={listProducts}

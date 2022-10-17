@@ -1,10 +1,28 @@
 import React from 'react';
+import {deleteProduct} from "../services/Product.services";
 
-const Product = ({product, setModeEdition, setProductEdit}) => {
+const Product = ({product, setModeEdition, setProductEdit, listProducts, setProductList, setFormRegistration}) => {
     const updateProduct = () => {
+        setFormRegistration(false);
         setModeEdition(true);
         setProductEdit(product);
     }
+    const deleteProd = async () => {
+        const id = product.id;
+        try {
+            // Se llama al servicio de eliminación de productos
+            await deleteProduct(id);
+            // Se crea una copia del arreglo de productos
+            const newProductList = listProducts.filter( prod => prod.id !== id);
+            // Se actualiza el estado del listado de productos
+            setProductList(newProductList);
+        }catch (e) {
+            console.log(e);
+        }
+
+    }
+
+
     return (
         <div className="card mb-3 max-auto rounded-4" style={{maxWidth: '300px'}}>
             <div className="row col-md-auto">
@@ -23,7 +41,7 @@ const Product = ({product, setModeEdition, setProductEdit}) => {
                         {/* Se colocan los botones de editar y eliminar. Cada botón esta debajo del otro y ocupan todo el ancho de la card */}
                         <div className="d-flex flex-column align-items-center mt-5 " style={{width:'260px'}}>
                             <button className="btn btn-warning rounded-5 p-2 mb-2" style={{width: '230px'}} onClick={()=> updateProduct()}>Editar</button>
-                            <button className="btn btn-danger rounded-5 p-2" style={{width: '230px'}}>Eliminar</button>
+                            <button className="btn btn-danger rounded-5 p-2" style={{width: '230px'}} onClick={()=>deleteProd()}>Eliminar</button>
                         </div>
                     </div>
                 </div>
