@@ -14,7 +14,6 @@ const Form = ( { formRegistration, setFormRegistration, listProducts, setProduct
     const [idProduct, setIdProduct] = useState('');
 
     const changeModeEdition = () => {
-        console.log('changeModeEdition', productEdit);
         const {nameProduct, descriptionProduct, priceProduct, stockProduct, categoryProduct, urlImg, statusProduct, id} = productEdit;
         setProductName(nameProduct);
         setDescriptionProduct(descriptionProduct);
@@ -50,7 +49,6 @@ const Form = ( { formRegistration, setFormRegistration, listProducts, setProduct
         // Se crea un objeto con los datos del producto a editar. Estos datos se obtienen del estado
         // de los inputs
         const data = generateObjectProduct()
-        console.log('data', data);
         // Se llama al servicio de actualización de productos
         const productDB = await updateProduct(data);
         // Se crea una copia del arreglo de productos
