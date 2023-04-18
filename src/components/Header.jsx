@@ -1,6 +1,6 @@
 import Form from "./Form";
 
-const Header = ({setFormRegistration, formRegistration, listProducts, setProductList, setModeEdition, modeEdition, productEdit, setProductEdit}) => {
+const Header = ({setFormRegistration, setModeEdition }) => {
 
     return (
         <div className="container">
